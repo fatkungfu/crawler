@@ -45,4 +45,11 @@ func main() {
 	cfg.wg.Wait()
 
 	printReport(cfg.pages, rawBaseURL)
+
+	err = saveReportCSV(cfg.pages, "report.csv")
+	if err != nil {
+		fmt.Printf("Error saving CSV: %v\n", err)
+	} else {
+		fmt.Println("Report saved as report.csv")
+	}
 }

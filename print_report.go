@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
+	"os"
 	"sort"
 )
 
@@ -39,4 +41,29 @@ func sortPages(pages map[string]int) []Page {
 		return pagesSlice[i].Count > pagesSlice[j].Count
 	})
 	return pagesSlice
+}
+
+func saveReportCSV(pages map[string]int, filename string) error {
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	// Write header
+	if err := writer.Write([]string{"URL", "Count"}); err != nil {
+		return err
+	}
+
+	sortedPages := sortPages(pages)
+	for _, page := range sortedPages {
+		record := []string{page.URL, fmt.Sprintf("%d", page.Count)}
+		if err := writer.Write(record); err != nil {
+			return err
+		}
+	}
+	return nil
 }
