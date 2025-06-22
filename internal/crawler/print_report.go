@@ -1,4 +1,4 @@
-package main
+package crawler
 
 import (
 	"encoding/csv"
@@ -12,7 +12,7 @@ type Page struct {
 	Count int
 }
 
-func printReport(pages map[string]int, baseURL string) {
+func PrintReport(pages map[string]int, baseURL string) {
 	fmt.Printf(`
 =============================
   REPORT for %s
@@ -43,7 +43,7 @@ func sortPages(pages map[string]int) []Page {
 	return pagesSlice
 }
 
-func saveReportCSV(pages map[string]int, filename string) error {
+func SaveReportCSV(pages map[string]int, filename string) error {
 	file, err := os.Create(filename)
 	if err != nil {
 		return err

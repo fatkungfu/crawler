@@ -15,7 +15,7 @@ A concurrent web crawler written in Go. Crawls a website, counts internal links 
 Build the crawler:
 
 ```sh
-go build -o crawler
+go build -o crawler ./cmd/crawler
 ```
 
 Run the crawler:
@@ -27,7 +27,7 @@ Run the crawler:
 Or run directly with Go:
 
 ```sh
-go run . <BASE_URL> <maxConcurrency> <maxPages>
+go run ./cmd/crawler <BASE_URL> <maxConcurrency> <maxPages>
 ```
 
 - <BASE_URL>: The root URL to start crawling (e.g., https://example.com)

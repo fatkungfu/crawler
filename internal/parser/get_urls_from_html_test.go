@@ -1,4 +1,4 @@
-package main
+package parser
 
 import (
 	"net/url"
@@ -110,7 +110,7 @@ func TestGetURLsFromHTML(t *testing.T) {
 				return
 			}
 
-			actual, err := getURLsFromHTML(tc.inputBody, baseURL)
+			actual, err := GetURLsFromHTML(tc.inputBody, baseURL)
 			if err != nil && !strings.Contains(err.Error(), tc.errorContains) {
 				t.Errorf("Test %v - '%s' FAIL: unexpected error: %v", i, tc.name, err)
 				return

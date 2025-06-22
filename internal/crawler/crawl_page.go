@@ -1,18 +1,20 @@
-package main
+package crawler
 
 import (
 	"fmt"
 	"net/url"
+
+	"github.com/fatkungfu/crawler/internal/parser"
 )
 
-func (cfg *config) crawlPage(rawCurrentURL string) {
+func (cfg *Config) CrawlPage(rawCurrentURL string) {
 	cfg.concurrencyControl <- struct{}{}
 	defer func() {
 		<-cfg.concurrencyControl
-		cfg.wg.Done()
+		cfg.Wg.Done()
 	}()
 
-	if cfg.pagesLen() >= cfg.maxPages {
+	if cfg.PagesLen() >= cfg.maxPages {
 		return
 	}
 
@@ -27,33 +29,33 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 		return
 	}
 
-	normalizedURL, err := normalizeURL(rawCurrentURL)
+	normalizedURL, err := parser.NormalizeURL(rawCurrentURL)
 	if err != nil {
 		fmt.Printf("Error - normalizedURL: %v", err)
 		return
 	}
 
-	isFirst := cfg.addPageVisit(normalizedURL)
+	isFirst := cfg.AddPageVisit(normalizedURL)
 	if !isFirst {
 		return
 	}
 
 	fmt.Printf("crawling %s\n", rawCurrentURL)
 
-	htmlBody, err := getHTML(rawCurrentURL)
+	htmlBody, err := parser.GetHTML(rawCurrentURL)
 	if err != nil {
 		fmt.Printf("Error - getHTML: %v", err)
 		return
 	}
 
-	nextURLs, err := getURLsFromHTML(htmlBody, cfg.baseURL)
+	nextURLs, err := parser.GetURLsFromHTML(htmlBody, cfg.baseURL)
 	if err != nil {
 		fmt.Printf("Error - getURLsFromHTML: %v", err)
 		return
 	}
 
 	for _, nextURL := range nextURLs {
-		cfg.wg.Add(1)
-		go cfg.crawlPage(nextURL)
+		cfg.Wg.Add(1)
+		go cfg.CrawlPage(nextURL)
 	}
 }

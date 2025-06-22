@@ -1,4 +1,4 @@
-package main
+package parser
 
 import (
 	"strings"
@@ -42,7 +42,7 @@ func TestNormalizeURL(t *testing.T) {
 
 	for i, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			actual, err := normalizeURL(tc.inputURL)
+			actual, err := NormalizeURL(tc.inputURL)
 			if err != nil && !strings.Contains(err.Error(), tc.errorContains) {
 				t.Errorf("Test %v - '%s' FAIL: unexpected error: %v", i, tc.name, err)
 				return

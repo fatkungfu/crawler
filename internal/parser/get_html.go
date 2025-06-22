@@ -1,4 +1,4 @@
-package main
+package parser
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // getHTML fetches the HTML content from the given URL.
-func getHTML(rawURL string) (string, error) {
+func GetHTML(rawURL string) (string, error) {
 	res, err := http.Get(rawURL)
 	if err != nil {
 		return "", fmt.Errorf("got network error: %v", err)
